@@ -8,11 +8,39 @@ body {
     background-size: cover;
     background-position-y: -300px;
     background-color: black;
-
+    font-family: 'zabras', Arial, Helvetica, sans-serif;
+    font-size: 25px;
+    text-shadow: 2px 2px 4px rgba(0, 8, 5, 0,8);
+    background-repeat: no-repeat;
+    background-position: center;
 }
+
+
+@font-face {
+    font-family: 'zabras';
+    src: url('fonts/zabras.ttf')  format('truetype'); 
+}  
 
 
 
 canvas {
     background-color: black;
+    display: block;
+}
+
+
+
+
+@media only screen and (max-width: 720px) {
+    canvas {
+        width: 100%;
+    }
+    
+}
+
+@media only screen and (max-height: 480px) {
+    canvas {
+        height: 100vh;
+    }
+    
 }

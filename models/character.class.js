@@ -73,6 +73,9 @@ class Character extends MovableObjekt {
     world;
 
     walking_sound = new Audio('audio/running.mp3');
+    hurt_sound = new Audio('audio/hurt.mp3');
+    jump_sound = new Audio('audio/jump.mp3');
+
 
 
     constructor() {
@@ -106,6 +109,7 @@ class Character extends MovableObjekt {
             // beide bediegungen müssen erfüllt werden deswegen && 
             if (this.world.keyboard.SPACE && !this.isAboveGround()) {
                 this.jump();
+                this.jump_sound.play();
             }
 
 
@@ -120,9 +124,12 @@ class Character extends MovableObjekt {
 
             if (this.isDead()) {
                 this.playAnimation(this.IMAGES_DEAD);
+                // this.lose_sound.play();
+
 
             } else if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
+                this.hurt_sound.play();
 
             } else if (this.isAboveGround()) {
                 this.playAnimation(this.IMAGES_JUMP);

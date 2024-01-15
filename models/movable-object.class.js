@@ -4,13 +4,16 @@ class MovableObjekt extends DrawableObject { //bewegbare objekte
     speedY = 0;
     acceleration = 2;
     energy = 100;
-    bottelAmount = 0;
+    bottelAmount = 100;
     coinsAmount = 0;
     lastHit = 0;
+    endbossAmount = 0;
+    endbossEnergy = 100;
+    
 
 
 
-// verändert die postion von colliding
+    // verändert die postion von colliding
     offset = {
         top: 0,
         left: 0,
@@ -66,30 +69,30 @@ class MovableObjekt extends DrawableObject { //bewegbare objekte
 
 
 
-//  das pepe nach dem es gestorben ist fällt und auch das die flasche beim werfen runter fällt und nach dem springen auch wieder runter kommt
+    //  das pepe nach dem es gestorben ist fällt und auch das die flasche beim werfen runter fällt und nach dem springen auch wieder runter kommt
     applyGravity() {
         setInterval(() => {
             if (this.isAboveGround() || this.speedY > 0) {
                 this.y -= this.speedY;
                 this.speedY -= this.acceleration;
-           
+
             }
         }, 1000 / 25);
 
 
     }
-// das pepe in der luft ist und wenn er stirbt nach unten fällt
+    // das pepe in der luft ist und wenn er stirbt nach unten fällt
     isAboveGround() {
         if (this instanceof ThrowableObject) {
             return true;
-         } else if (this.energy < 1){ 
+        } else if (this.energy < 1) {
             return true;
         } else {
             return this.y < 140;
 
         }
     }
-    
+
 
     // überprüft ob 2 gegenstände aufeinander kommen // Chicken
     isColliding(mo) {
@@ -120,23 +123,29 @@ class MovableObjekt extends DrawableObject { //bewegbare objekte
 
 
 
-
-
-
-
-
-
-    hit() {
-        this.energy -= 5;
-        if (this.energy < 0) {
-            this.energy = 0; // wird auf 0 gesetzt damit es nicht -5 wird
-        } else {
-            this.lastHit = new Date().getTime();// der zeitpunkt wo er angeriffen wird 
-        }
+    isCollidingEndboss(mo) {
+        return this.x + this.width - this.offsetEndboss.rightEndboss > mo.x + mo.offsetEndboss.leftEndboss &&
+            this.y + this.height - this.offsetEndboss.bottomEndboss > mo.y + mo.offsetEndboss.topEndboss &&
+            this.x + this.offsetEndboss.leftEndboss < mo.x + mo.width - mo.offsetEndboss.rightEndboss &&
+            this.y + this.offsetEndboss.topEndboss < mo.y + mo.height - mo.offsetEndboss.bottomEndboss;
     }
 
 
 
+
+//leben
+    hit() {
+        this.energy -= 2;
+        if (this.energy < 0) {
+            this.energy = 0; // wird auf 0 gesetzt damit es nicht -5 wird
+        } else {
+            this.lastHit = new Date().getTime();// der zeitpunkt wo er angeriffen wird 
+        }    
+    }
+
+
+
+    //aufsammeln von den flaschen 
     hitBottle() {
         this.bottelAmount += 20;
         if (this.bottelAmount > 100) {
@@ -147,7 +156,7 @@ class MovableObjekt extends DrawableObject { //bewegbare objekte
 
 
 
-
+    //aufsammeln von den coins die dann in der coinsbar angezeigt werden
     hitCoins() {
         this.coinsAmount += 20;
         if (this.coinsAmount > 100) {
@@ -155,6 +164,41 @@ class MovableObjekt extends DrawableObject { //bewegbare objekte
 
         }
     }
+
+
+
+    hitEndboss() {
+        this.endbossAmount += 20;
+        if (this.endbossAmount > 100) {
+            this.endbossAmount = 100;
+
+        }
+    }
+
+
+
+    hitendbossbottel() {
+        this.endbossEnergy -= 1;
+        if (this.endbossEnergy < 0) {
+            this.endbossEnergy = 0; // wird auf 0 gesetzt damit es nicht -5 wird
+        }
+    }
+
+
+
+
+    hitendbossjump() {
+        this.endbossEnergy -= 100;
+        if (this.endbossEnergy < 0) {
+            this.endbossEnergy = 0; // wird auf 0 gesetzt damit es nicht -5 wird
+        }
+    }
+
+
+
+
+
+
 
 
 
@@ -170,6 +214,9 @@ class MovableObjekt extends DrawableObject { //bewegbare objekte
     isDead() {
         return this.energy == 0;
     }
+
+
+
 
 
     moveRight() {
@@ -191,10 +238,6 @@ class MovableObjekt extends DrawableObject { //bewegbare objekte
         this.currentImage++;
     }
 
-
-    jump() {
-        this.speedY = 30;
-    }
 
 
 }

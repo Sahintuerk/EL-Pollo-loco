@@ -77,6 +77,25 @@ class DrawableObject {
 
 
 
+    drawFrameEndboss(ctx) {
+        if (this instanceof Endboss ) {
+            ctx.beginPath();
+            ctx.lineWidth = '5';
+            ctx.strokeStyle = 'pink';
+            ctx.rect(this.x+10, this.y+30, this.width-10, this.height-40);
+            ctx.stroke();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
 
 
     loadImages(arr) {

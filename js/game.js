@@ -7,13 +7,13 @@ function init() {
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
 
-    console.log('my character is', world.character);
+    // console.log('my character is', world.character);
 }
 
 
 // Tastatur
 window.addEventListener("keydown", (e) => {
-    console.log(e.keyCode);
+    // console.log(e.keyCode);
 
     if (e.keyCode == 39) {
         keyboard.RIGHT = true;
